@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Добавляли данную переменную(она необходима для управления несколькими сайтами)
 SITE_ID = 1
 
 # Application definition
@@ -43,6 +44,14 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'fpages',
     'newsarticle',
+    # Приложение для создания фильтров
+    'django_filters',
+    # Приложения для allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.yandex',
+
 ]
 
 
@@ -54,7 +63,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Мидлвар для Flatpages
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    # Мидлвар для allauth
+    'allauth.account.middleware.AccountMiddleware',
 
 ]
 
@@ -63,6 +75,7 @@ ROOT_URLCONF = 'newspaper.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # Задание базовых директорий(в данном случае место хранение темплейтов)
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -71,6 +84,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Добавлен контекстный процессор для allauth
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -108,6 +123,33 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Добавлено для работы с allauth
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Переопределяем форму на Custom, что бы зарегистрировавшегося пользователя сразу
+# отправлять в группу users
+ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
+
+# Определение обязательных и необязательных полей для регистрации и авторизации
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# Добавление провайдера для реализации OAuth
+SOCIALACCOUNT_PROVIDERS = {
+    'yandex': {
+        'APP': {
+            'client_id': 'd99dcb220ab14d4c95c1e497e0f7f6f7',
+            'secret': '2e6dcc3916384a6497f2cfb938d563ce',
+            'key': '',
+        }
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -131,6 +173,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Добален путь к базовой директории для файлов css
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
+# Добавлен путь для редеректа по умолчанию после авторизации
+LOGIN_REDIRECT_URL = "/news"
