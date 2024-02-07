@@ -2,6 +2,8 @@
 
 {% load custom_filters %}
 
+{% load custom_tags %}
+
 {% block title %}
 PostsPreview
 {% endblock title %}
@@ -10,23 +12,56 @@ PostsPreview
 {% block content %}
    <h1>Все статьи</h1>
    <h3>Всего {{ posts|length }} публикаций</h3>
-   <hr>
+
+{#Автоматическая генерация полей!!! Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+   <form action="" method="get">
+       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
+       {{ filterset.form.as_p }}
+       {# Добавим кнопку отправки данных формы #}
+       <input type="submit" value="Найти" />
+   </form>
+
+    <hr>
    {% if posts %}
-       <table>
-           <tr>
-               <td> Заголовок </td>
-               <td> Дата публикации </td>
-               <td> Текст статьи </td>
-           </tr>
+       <table style="height: 31px; margin-left: auto; margin-right: auto; width: 1800px;">
+           <tbody>
+               <tr>
+                   <td style="width: 300px; text-align: center;"> Заголовок </td>
+                   <td style="width: 300px; text-align: center;"> Дата публикации </td>
+                   <td style="width: 600px; text-align: center;"> Текст статьи </td>
+               </tr>
        {% for post in posts %}
-           <tr>
-               <td>{{ post.title|censor }}</td>
-               <td>{{ post.date_creation }}</td>
-               <td>{{ post.text|censor|truncatewords:20 }}</td>
-           </tr>
-           {% endfor %}
+               <tr>
+                   <td style="width: 300px; text-align: left;"> {{ post.title|censor }} </td>
+                   <td style="width: 300px; text-align: left;"> {{ post.date_creation }} </td>
+                   <td style="width: 600px; text-align: left;"> {{ post.text|censor|truncatewords:20 }} </td>
+               </tr>
+               {% endfor %}
+           </tbody>
        </table>
    {% else %}
        <h2>Новостей и статей нет!</h2>
+   {% endif %}
+
+
+{# Добавляем пагинацию на страницу #}
+
+{% if page_obj.has_previous %}
+       {# Для каждой ссылки пагинации указываем обработку через новый тег #}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
    {% endif %}
 {% endblock content %}
