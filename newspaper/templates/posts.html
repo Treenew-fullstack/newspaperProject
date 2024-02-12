@@ -37,10 +37,10 @@ PostsPreview
                    <td style="width: 600px; text-align: left;"> {{ post.text|censor|truncatewords:20 }} </td>
                    <td>
                     {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
-                    {% if perms.simpleapp.change_post %}
+                    {% if perms.newsarticle.change_post %}
                     <a href="{% url 'edit_post' pk=post.id %}">Изменить</a>
                     {% endif %}
-                    {% if perms.simpleapp.delete_post %}
+                    {% if perms.newsarticle.delete_post %}
                     <a href="{% url 'delete_post' post.id %}">Удалить</a>
                     {% endif %}
                 </td>

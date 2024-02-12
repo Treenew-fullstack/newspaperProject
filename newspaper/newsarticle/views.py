@@ -61,6 +61,7 @@ class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
 
 
 class PostEdit(PermissionRequiredMixin, UpdateView):
+    raise_exception = True
     permission_required = ('newsarticle.change_post',)
     form_class = PostForm
     model = Post
@@ -69,6 +70,7 @@ class PostEdit(PermissionRequiredMixin, UpdateView):
 
 
 class PostDelete(PermissionRequiredMixin, DeleteView):
+    raise_exception = True
     permission_required = ('newsarticle.delete_post',)
     model = Post
     template_name = 'delete_post.html'
