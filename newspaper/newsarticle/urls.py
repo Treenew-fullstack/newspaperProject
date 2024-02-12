@@ -9,6 +9,7 @@ urlpatterns = [
     path('news/', PostPreview.as_view(), name='posts_list'),
     path('articles/', PostPreview.as_view(), name='posts_list'),
     path('news/<int:pk>/', NewsPreview.as_view(), name='post_preview'),
+    path('articles/<int:pk>/', NewsPreview.as_view(), name='post_preview'),
     path('news/create/', PostCreate.as_view(), name='create_post'),
     path('news/<int:pk>/edit/', PostEdit.as_view(), name='edit_post'),
     path('news/<int:pk>/delete/', PostDelete.as_view(), name='delete_post'),

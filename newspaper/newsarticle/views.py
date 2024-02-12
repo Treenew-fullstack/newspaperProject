@@ -47,7 +47,8 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    raise_exception = True
     permission_required = ('newsarticle.add_article',)
     form_class = ArticleForm
     model = Post
@@ -59,7 +60,7 @@ class ArticleCreate(CreateView):
         return super().form_valid(form)
 
 
-class PostEdit(UpdateView):
+class PostEdit(PermissionRequiredMixin, UpdateView):
     permission_required = ('newsarticle.change_post',)
     form_class = PostForm
     model = Post
@@ -67,7 +68,7 @@ class PostEdit(UpdateView):
 
 
 
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('newsarticle.delete_post',)
     model = Post
     template_name = 'delete_post.html'
