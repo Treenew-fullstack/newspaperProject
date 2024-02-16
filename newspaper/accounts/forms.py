@@ -31,7 +31,7 @@ class CustomSignupForm(SignupForm):
         subject = 'Добро пожаловать на Портал безумных новостей!'
         text = f'{user.username}, Вы успешно зарегистрировались!'
         html = (
-            f'<b>{user.username}</b>, вы успешно зарегистрировались на <a href="http://127.0.0.1:8000/news">сайте</a>!'
+            f'<b>{user.username}</b>, вы успешно зарегистрировались на нашем <a href="http://127.0.0.1:8000/news">сайте</a>!'
         )
         msg = EmailMultiAlternatives(
             subject=subject, body=text, from_email=None, to=[user.email]
