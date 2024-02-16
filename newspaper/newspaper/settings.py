@@ -151,6 +151,16 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Настройка почты для рассылок
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'treenew2@yandex.ru'
+EMAIL_HOST_PASSWORD = 'hpmainxktiqcsofg'
+EMAIL_USE_SSL = 'True'
+
+DEFAULT_FROM_EMAIL = 'treenew2@yandex.ru'
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 

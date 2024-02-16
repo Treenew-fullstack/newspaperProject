@@ -9,14 +9,14 @@ class PostFilter(FilterSet):
         lookup_expr='gt',
         widget=DateTimeInput(
             format='%d-%m-%Y',
-            attrs={'type': 'datetime-local'}
+            attrs={'type': 'datetime-local'},
         )
 
     )
     category = ModelChoiceFilter(
         field_name='post_category',
         queryset=Category.objects.all(),
-        label='Category',
+        label='Категория',
     )
 
     class Meta:
