@@ -17,7 +17,7 @@ def post_created_notify(sender, instance, **kwargs):
             subscriptions=instance.post_category
         ).values_list('email', flat=True)
 
-        subject = f'Новая статья в категории {instance.category}'
+        subject = f'Новая статья в категории {instance.post_category}'
 
         text_content = (
         f'Тип: {instance.category_type}\n'
