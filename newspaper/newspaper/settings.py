@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'fpages',
-    'newsarticle',
+    'newsarticle.apps.NewsarticleConfig',
     # Приложение для создания фильтров
     'django_filters',
     # Приложения для allauth
@@ -138,7 +138,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 # Добавление провайдера для реализации OAuth
 SOCIALACCOUNT_PROVIDERS = {
@@ -160,6 +160,8 @@ EMAIL_HOST_PASSWORD = 'hpmainxktiqcsofg'
 EMAIL_USE_SSL = 'True'
 
 DEFAULT_FROM_EMAIL = 'treenew2@yandex.ru'
+
+SERVER_EMAIL = 'treenew2@yandex.ru'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

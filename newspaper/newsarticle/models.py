@@ -25,6 +25,7 @@ class Author(models.Model):
 class Category(models.Model):
     naming = models.CharField(max_length=64, unique=True)
 
+
     def __str__(self):
         return self.naming.title()
 
@@ -80,3 +81,17 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+# Модель для базы данных подписчиков
+class Subscriber(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
