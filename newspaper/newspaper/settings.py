@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    # Приложение для выполнения задач по расписанию
+    'django_apscheduler',
 
 ]
 
@@ -190,5 +192,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
-# Добавлен путь для редеректа по умолчанию после авторизации
+# Добавлен путь для редиректа по умолчанию после авторизации
 LOGIN_REDIRECT_URL = "/news"
+
+# Добавление переменных для работы с планировщиком задач
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
