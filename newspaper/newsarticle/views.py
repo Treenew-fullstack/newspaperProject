@@ -4,12 +4,15 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
+from django.http import HttpResponse
 from datetime import datetime
+from django.views import View
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView)
 from .models import Post, Subscriber, Category
 from .filters import PostFilter
 from .forms import PostForm, ArticleForm
+from .tasks import hello
 
 
 # Представдение для главной страницы с функциями фильтации
@@ -121,7 +124,11 @@ def subscriptions(request):
     )
 
 
-
+# Представление для теста работы Celery-Redis
+class IndexView(View):
+    def get(selfself, request):
+        hello.delay()
+        return HttpResponse('Hello!')
 
 
 

@@ -198,3 +198,10 @@ LOGIN_REDIRECT_URL = "/news"
 # Добавление переменных для работы с планировщиком задач
 APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+# Настройки для работы Celery и Redis (асинхронная работа приложения)
+CELERY_BROKER_URL = 'redis://default:R1p01YwV6wKa2hhXbo864OMNzuDj12Po@redis-13663.c327.europe-west1-2.gce.cloud.redislabs.com:13663'
+CELERY_RESULT_BACKEND = 'redis://default:R1p01YwV6wKa2hhXbo864OMNzuDj12Po@redis-13663.c327.europe-west1-2.gce.cloud.redislabs.com:13663'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

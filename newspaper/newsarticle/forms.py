@@ -21,4 +21,5 @@ class ArticleForm(forms.ModelForm):
             'title',
             'post_category',
             'text',
+
         ]

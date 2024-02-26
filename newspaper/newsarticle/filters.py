@@ -3,6 +3,7 @@ from django.forms import DateTimeInput
 from .models import Post, Category
 
 
+# Фильтры для поиска статей
 class PostFilter(FilterSet):
     dt_filter = DateTimeFilter(
         field_name='date_creation',

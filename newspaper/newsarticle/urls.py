@@ -1,4 +1,5 @@
 from django.urls import path
+from.views import IndexView
 from .views import (
     PostPreview, NewsPreview, PostCreate,
     PostEdit, PostDelete, ArticleCreate,
@@ -7,6 +8,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path('test', IndexView.as_view()),
     path('', PostPreview.as_view(), name='posts_list'),
     path('news/', PostPreview.as_view(), name='posts_list'),
     path('articles/', PostPreview.as_view(), name='posts_list'),
