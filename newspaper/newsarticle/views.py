@@ -12,7 +12,7 @@ from django.views.generic import (
 from .models import Post, Subscriber, Category
 from .filters import PostFilter
 from .forms import PostForm, ArticleForm
-from .tasks import hello
+
 
 
 # Представдение для главной страницы с функциями фильтации
@@ -44,7 +44,7 @@ class NewsPreview(DetailView):
     context_object_name = 'post'
 
 
-# Представдение для страницы удаления новостей
+# Представдение для страницы создание новостей
 class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     raise_exception = True
     permission_required = ('newsarticle.add_post',)
@@ -126,7 +126,7 @@ def subscriptions(request):
 
 # Представление для теста работы Celery-Redis
 class IndexView(View):
-    def get(selfself, request):
+    def get(self, request):
         hello.delay()
         return HttpResponse('Hello!')
 

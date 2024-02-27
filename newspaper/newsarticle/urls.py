@@ -8,7 +8,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path('test', IndexView.as_view()),
     path('', PostPreview.as_view(), name='posts_list'),
     path('news/', PostPreview.as_view(), name='posts_list'),
     path('articles/', PostPreview.as_view(), name='posts_list'),
