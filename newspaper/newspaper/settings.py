@@ -231,7 +231,6 @@ LOGGING = {
         'debugformatter': {
             'format': '%(asctime)s %(levelname)s %(message)s'
         },
-    },
         'warningformatter': {
             'format': '%(asctime)s %(levelname)s %(pathname)s %(message)s'
         },
@@ -250,17 +249,17 @@ LOGGING = {
         'sendmailadmins': {
             'format': '%(asctime)s %(levelname)s %(pathname)s'
         },
+    },
     # Настройка фильтров
     'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
-    },
-
 
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse',
         },
+    },
     # Настройка хендлерров с указанием форматтеров, уровней и фильтров
     'handlers': {
         'console1': {
@@ -269,8 +268,6 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'debugformatter',
         },
-    },
-
         'console2': {
             'level': 'WARNING',
             'filters': ['require_debug_true'],
@@ -308,13 +305,13 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter': 'sendmailadmins'
         },
+    },
     # Настройка логгеров с указанием используемого хендлера
     'loggers': {
         'django': {
-            'handlers': ['console1'],
+            'handlers': ['console1', 'console2', 'console3', 'filegeneral'],
             'propagate': True,
         },
-    },
         'django.request': {
             'handlers': ['fileerrors', 'mailadmins'],
             'propagate': True,
@@ -336,6 +333,7 @@ LOGGING = {
             'propagate': True,
         },
     },
+},
 
 
 
