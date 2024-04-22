@@ -2,10 +2,12 @@
 
 {% load custom_filters %}
 
+{% load cache %}
+    {% cache 60 title %}
 {% block title %}
 PostsPreview
 {% endblock title %}
-
+    {% endcache %}
 
 {% block content %}
    <h1></h1>
@@ -21,6 +23,7 @@ PostsPreview
                <td>{{ post.title|censor }}</td>
                <td>{{ post.date_creation|date:'d M Y' }}</td>
                <td>{{ post.text|censor }}</td>
+               <td>{{ post.category_type }}</td>
            </tr>
 
        </table>

@@ -69,6 +69,10 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     # Мидлвар для allauth
     'allauth.account.middleware.AccountMiddleware',
+    # Кэширование всего сайта целиком
+    #'django.middleware.cache.UpdateCacheMiddleware',
+    #'django.middleware.common.CommonMiddleware',
+    #'django.middleware.cache.FetchFromCacheMiddleware',
 
 ]
 
@@ -205,3 +209,135 @@ CELERY_RESULT_BACKEND = 'redis://default:R1p01YwV6wKa2hhXbo864OMNzuDj12Po@redis-
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# Настройки для кэширования
+CACHES = {
+    'default': {
+        # Для кэширования всего приложения добавляем TIMEOUT
+        #'TIMEOUT': 60,
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+    }
+}
+
+# Настройка логирования
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_logger': False,
+    'style': '{',
+    # Настройка форматтеров
+    'formatters': {
+        'debugformatter': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+    },
+        'warningformatter': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(message)s'
+        },
+        'errorformatter': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(exc_info)s %(message)s'
+        },
+        'generalfileformatter': {
+            'format': '%(asctime)s %(module)s %(message)s'
+        },
+        'errorfileformatter': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(exc_info)s'
+        },
+        'securityfileformatter': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
+        },
+        'sendmailadmins': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s'
+        },
+    # Настройка фильтров
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+
+
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    # Настройка хендлерров с указанием форматтеров, уровней и фильтров
+    'handlers': {
+        'console1': {
+            'level': 'DEBUG',
+            # 'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'debugformatter',
+        },
+    },
+
+        'console2': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warningformatter',
+        },
+        'console3': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'errorformatter',
+        },
+        'filegeneral': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'generalfileformatter',
+        },
+        'fileerrors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'errorfileformatter'
+        },
+        'filesecurity': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'securityfileformatter'
+        },
+        'mailadmins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'sendmailadmins'
+        },
+    # Настройка логгеров с указанием используемого хендлера
+    'loggers': {
+        'django': {
+            'handlers': ['console1'],
+            'propagate': True,
+        },
+    },
+        'django.request': {
+            'handlers': ['fileerrors', 'mailadmins'],
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['fileerrors', 'mailadmins'],
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['fileerrors'],
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['fileerrors'],
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['filesecurity'],
+            'propagate': True,
+        },
+    },
+
+
+
+
+

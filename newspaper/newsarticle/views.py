@@ -7,11 +7,16 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from datetime import datetime
 from django.views import View
+from django.core.cache import cache
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView)
 from .models import Post, Subscriber, Category
 from .filters import PostFilter
 from .forms import PostForm, ArticleForm
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -42,6 +47,15 @@ class NewsPreview(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+
+    # Переопределение метода получение объекта и условие для кэширования
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+            return obj
+
 
 
 # Представдение для страницы создание новостей
@@ -126,9 +140,9 @@ def subscriptions(request):
 
 # Представление для теста работы Celery-Redis
 class IndexView(View):
-    def get(self, request):
-        hello.delay()
-        return HttpResponse('Hello!')
+   def get(self, request):
+       hello.delay()
+       return HttpResponse('Hello!')
 
 
 

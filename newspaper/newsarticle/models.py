@@ -1,14 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.core.cache import cache
 from django.urls import reverse
 
 
 class Author(models.Model):
     author_user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating_author = models.IntegerField(default=0)
+
     def __str__(self):
-         return self.author_user.username.title()
+        return self.author_user.username
 
     def update_rating(self):
         post_rat = self.post_set.aggregate(post_rating=Sum('rating'))
@@ -28,7 +30,7 @@ class Category(models.Model):
 
 
     def __str__(self):
-        return self.naming.title()
+        return self.naming
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -46,7 +48,7 @@ class Post(models.Model):
     rating = models.IntegerField(default=0)
 
     def __str__(self):
-       return self.title.title()
+        return self.title
 
     def like(self):
         self.rating += 1
@@ -61,6 +63,11 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post_preview', args=[str(self.id)])
+
+    # Переопределяем метод для кэширования, принимающего изменения поста
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'post-{self.pk}')
 
 
 class PostCategory(models.Model):

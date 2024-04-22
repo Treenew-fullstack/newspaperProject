@@ -1,5 +1,5 @@
 from django.urls import path
-from.views import IndexView
+from django.views.decorators.cache import cache_page
 from .views import (
     PostPreview, NewsPreview, PostCreate,
     PostEdit, PostDelete, ArticleCreate,
@@ -8,7 +8,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', PostPreview.as_view(), name='posts_list'),
+    path('', cache_page(60)(PostPreview.as_view()), name='posts_list'),
     path('news/', PostPreview.as_view(), name='posts_list'),
     path('articles/', PostPreview.as_view(), name='posts_list'),
     path('news/<int:pk>/', NewsPreview.as_view(), name='post_preview'),

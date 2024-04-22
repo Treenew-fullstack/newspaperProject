@@ -4,9 +4,12 @@
 
 {% load custom_tags %}
 
+{% load cache %}
+{% cache 60 title %}
 {% block title %}
 PostsPreview
 {% endblock title %}
+{% endcache %}
 
 
 {% block content %}
@@ -69,7 +72,6 @@ PostsPreview
    {% if page_obj.has_next %}
        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
-           ...
            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}

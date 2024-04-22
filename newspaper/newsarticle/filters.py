@@ -1,10 +1,13 @@
-from django_filters import (FilterSet, ModelChoiceFilter, DateTimeFilter,)
+from django_filters import (FilterSet, DateTimeFilter, ModelMultipleChoiceFilter, MultipleChoiceFilter)
 from django.forms import DateTimeInput
 from .models import Post, Category
 
+# Словарь типов категорий для фильтации
+STATUS_CHOICES = Post.CATEGORY_CHOICES
 
-# Фильтры для поиска статей
+# Фильтр для поиска статей
 class PostFilter(FilterSet):
+    # Фильтр по дате (от даты и свежее) с календарем
     dt_filter = DateTimeFilter(
         field_name='date_creation',
         lookup_expr='gt',
@@ -14,10 +17,15 @@ class PostFilter(FilterSet):
         )
 
     )
-    category = ModelChoiceFilter(
+    # Поле фильтрации по категориям
+    category = ModelMultipleChoiceFilter(
         field_name='post_category',
         queryset=Category.objects.all(),
         label='Категория',
+    )
+    # Поле фильтрации по типам категорий
+    category_type = MultipleChoiceFilter(
+        choices=STATUS_CHOICES,
     )
 
     class Meta:
@@ -25,4 +33,3 @@ class PostFilter(FilterSet):
         fields = {
             'title': ['icontains'],
         }
-
