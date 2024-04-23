@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 # Представдение для главной страницы с функциями фильтации
 class PostPreview(ListView):
+    logger.info('INFO')
     model = Post
     ordering = '-date_creation'
     template_name = 'posts.html'

@@ -225,7 +225,34 @@ LOGGING = {
     'version': 1,
     'disable_existing_logger': False,
     'style': '{',
-    # Настройка форматтеров
+    # Настройка логгеров с указанием используемого хендлера
+    'loggers': {
+        'django': {
+            'handlers': ['console1', 'console2', 'console3', 'filegeneral'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['fileerrors', 'mailadmins'],
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['fileerrors', 'mailadmins'],
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['fileerrors'],
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['fileerrors'],
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['filesecurity'],
+            'propagate': True,
+        },
+    },
+    # Настройка форматтеров(форматирование выводимых логов)
     'formatters': {
         'debugformatter': {
             'format': '%(asctime)s %(levelname)s %(message)s'
@@ -263,7 +290,7 @@ LOGGING = {
     'handlers': {
         'console1': {
             'level': 'DEBUG',
-            # 'filters': ['require_debug_true'],
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'debugformatter',
         },
@@ -305,33 +332,7 @@ LOGGING = {
             'formatter': 'sendmailadmins'
         },
     },
-    # Настройка логгеров с указанием используемого хендлера
-    'loggers': {
-        'django': {
-            'handlers': ['console1', 'console2', 'console3', 'filegeneral'],
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['fileerrors', 'mailadmins'],
-            'propagate': True,
-        },
-        'django.server': {
-            'handlers': ['fileerrors', 'mailadmins'],
-            'propagate': True,
-        },
-        'django.template': {
-            'handlers': ['fileerrors'],
-            'propagate': True,
-        },
-        'django.db.backends': {
-            'handlers': ['fileerrors'],
-            'propagate': True,
-        },
-        'django.security': {
-            'handlers': ['filesecurity'],
-            'propagate': True,
-        },
-    },
+
 }
 
 
