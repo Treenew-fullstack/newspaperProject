@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.yandex',
     # Приложение для выполнения задач по расписанию
     'django_apscheduler',
+    # Приложение для работы с REST Api
+    'rest_framework',
 
 ]
 
@@ -221,6 +223,7 @@ CACHES = {
 }
 
 # Настройка логирования
+ADMINS = [('Nikolai', 'treenew2@yandex.ru')]
 LOGGING = {
     'version': 1,
     'disable_existing_logger': False,
@@ -228,6 +231,7 @@ LOGGING = {
     # Настройка логгеров с указанием используемого хендлера
     'loggers': {
         'django': {
+            'level': 'DEBUG',
             'handlers': ['console1', 'console2', 'console3', 'filegeneral'],
             'propagate': True,
         },
@@ -264,16 +268,16 @@ LOGGING = {
             'format': '%(asctime)s %(levelname)s %(pathname)s %(exc_info)s %(message)s'
         },
         'generalfileformatter': {
-            'format': '%(asctime)s %(module)s %(message)s'
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
         },
         'errorfileformatter': {
-            'format': '%(asctime)s %(levelname)s %(pathname)s %(exc_info)s'
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s'
         },
         'securityfileformatter': {
             'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
         },
         'sendmailadmins': {
-            'format': '%(asctime)s %(levelname)s %(pathname)s'
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(message)s'
         },
     },
     # Настройка фильтров
@@ -320,7 +324,7 @@ LOGGING = {
             'formatter': 'errorfileformatter'
         },
         'filesecurity': {
-            'level': 'ERROR',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'security.log',
             'formatter': 'securityfileformatter'
